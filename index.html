@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مُضيف | REDSEA AUTOGUEST</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <img class="logo" src="assets/logo-icon.png" alt="شعار مُضيف" width="72" height="72">
+    <div class="brand-block">
+      <p class="brand">مُضيف</p>
+      <p class="brand-en">REDSEA AUTOGUEST</p>
+      <p class="tagline">اتصال سلس... وضيافة رقمية فاخرة</p>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- PHONE -->
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="statusbar">
+          <span id="clock">9:41</span>
+          <span>📶 Resort-Guest · 🔋 82%</span>
+        </div>
+
+        <div class="screen-inner" id="screenInner">
+
+          <!-- SCREEN 1: splash -->
+          <div class="splash" id="screen-splash">
+            <img class="splash-logo" src="assets/logo-icon.png" alt="شعار مُضيف" width="72" height="72">
+            <h2>مرحباً بك في المنتجع</h2>
+            <p>جهازك اتصل بشبكة "Resort-Guest". أكمل تسجيل الدخول للحصول على إنترنت آمن والوصول إلى خدمات غرفتك.</p>
+            <button class="btn btn-primary" onclick="goTo('login')">متابعة تسجيل الدخول</button>
+          </div>
+
+          <!-- SCREEN 2: login -->
+          <div class="splash" id="screen-login" style="display:none; text-align:right; align-items:stretch; justify-content:flex-start; padding-top:6px;">
+            <h2 style="text-align:center;">تسجيل دخول الضيف</h2>
+            <p style="text-align:center; margin-bottom:6px;">أدخل رقم الغرفة واسم العائلة كما في الحجز</p>
+
+            <div class="form-field">
+              <label for="roomNo">رقم الغرفة</label>
+              <input id="roomNo" type="text" placeholder="مثال: 214" value="214">
+            </div>
+            <div class="form-field">
+              <label for="lastName">اسم العائلة</label>
+              <input id="lastName" type="text" placeholder="مثال: ليلاس" value="ليلاس">
+            </div>
+
+            <p class="form-error" id="loginError" role="alert" style="display:none;"></p>
+            <button class="btn btn-primary" onclick="login()">اتصال آمن بالواي فاي</button>
+
+            <div class="security-note">
+              <span>🔒</span>
+              <span>يتم عزل جهازك في شبكة فرعية خاصة بغرفتك (WPA3 + VLAN) — لا يمكن لأي ضيف آخر رؤية جهازك.</span>
+            </div>
+          </div>
+
+          <!-- SCREEN 3: dashboard -->
+          <div id="screen-dashboard" style="display:none;">
+            <div class="greet">
+              <div class="eyebrow">غرفة <span id="guestRoomLabel">214</span> · نُزل الشاطئ</div>
+              <h2>أهلاً، أسرة <span id="guestNameLabel">ليلاس</span></h2>
+              <span class="status-chip"><span class="dot"></span> متصل بأمان — WPA3</span>
+            </div>
+
+            <div class="tabs">
+              <button class="tab active" data-pane="events" onclick="setTab('events')">الفعاليات</button>
+              <button class="tab" data-pane="room" onclick="setTab('room')">غرفتي الذكية</button>
+              <button class="tab" data-pane="security" onclick="setTab('security')">الأمان</button>
+            </div>
+
+            <!-- EVENTS -->
+            <div class="pane active" id="pane-events">
+              <div class="event">
+                <div class="time">7:00<br>ص</div>
+                <div class="meta"><h4>يوغا الشروق على الشاطئ</h4><p>الشاطئ الجنوبي · مستوى مبتدئ</p></div>
+                <button class="join" onclick="toggleJoin(this)">انضمام</button>
+              </div>
+              <div class="event">
+                <div class="time">10:30<br>ص</div>
+                <div class="meta"><h4>رحلة غوص للشعاب المرجانية</h4><p>مركز الغوص · مدتها ساعتان</p></div>
+                <button class="join" onclick="toggleJoin(this)">انضمام</button>
+              </div>
+              <div class="event">
+                <div class="time">4:00<br>م</div>
+                <div class="meta"><h4>كرة الطائرة الشاطئية</h4><p>ملعب الشاطئ · لكل الأعمار</p></div>
+                <button class="join" onclick="toggleJoin(this)">انضمام</button>
+              </div>
+              <div class="event">
+                <div class="time">6:30<br>م</div>
+                <div class="meta"><h4>غروب وشواء على الرمل</h4><p>الرصيف الخشبي · حجز مطلوب</p></div>
+                <button class="join" onclick="toggleJoin(this)">انضمام</button>
+              </div>
+            </div>
+
+            <!-- ROOM / IoT -->
+            <div class="pane" id="pane-room">
+              <div class="device">
+                <div class="device-row">
+                  <div class="device-icon" id="lockIcon">🔒</div>
+                  <div>
+                    <p class="device-name">قفل الباب الذكي</p>
+                    <p class="device-sub" id="lockSub">مقفل · آمن</p>
+                  </div>
+                </div>
+                <button class="btn coffee-btn" id="lockBtn" onclick="toggleLock()" style="background:var(--lagoon-500); color:var(--sand-050);">فتح الباب</button>
+                <div class="coffee-status" id="lockStatus" style="display:block;">يمكنك أيضاً فتح الباب عبر هاتفك كبديل عن البطاقة</div>
+              </div>
+
+              <div class="device">
+                <div class="device-row">
+                  <div class="device-icon">💡</div>
+                  <div>
+                    <p class="device-name">إضاءة الغرفة</p>
+                    <p class="device-sub" id="lightSub">مضاءة · دافئة</p>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" id="lightToggle" checked onchange="onLight()">
+                    <span class="track"></span>
+                  </label>
+                </div>
+                <div class="slider-row">
+                  <input type="range" min="0" max="100" value="70" id="lightSlider" oninput="onDim(this.value)">
+                  <div class="slider-labels"><span>خافت</span><span id="lightPct">70%</span><span>ساطع</span></div>
+                </div>
+              </div>
+
+              <div class="device">
+                <div class="device-row">
+                  <div class="device-icon">🌡️</div>
+                  <div>
+                    <p class="device-name">تكييف الغرفة</p>
+                    <p class="device-sub" id="acSub">22° مئوية</p>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" id="acToggle" checked>
+                    <span class="track"></span>
+                  </label>
+                </div>
+                <div class="slider-row">
+                  <input type="range" min="18" max="28" value="22" id="acSlider" oninput="onAc(this.value)">
+                  <div class="slider-labels"><span>18°</span><span id="acVal">22°</span><span>28°</span></div>
+                </div>
+              </div>
+
+              <div class="device">
+                <div class="device-row">
+                  <div class="device-icon">🪟</div>
+                  <div>
+                    <p class="device-name">الستائر الذكية</p>
+                    <p class="device-sub" id="curtainSub">مفتوحة · 70%</p>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" id="curtainToggle" checked onchange="onCurtainToggle()">
+                    <span class="track"></span>
+                  </label>
+                </div>
+                <div class="slider-row">
+                  <input type="range" min="0" max="100" value="70" id="curtainSlider" oninput="onCurtain(this.value)">
+                  <div class="slider-labels"><span>مغلقة</span><span id="curtainPct">70%</span><span>مفتوحة</span></div>
+                </div>
+              </div>
+
+              <div class="device">
+                <div class="device-row">
+                  <div class="device-icon">☕</div>
+                  <div>
+                    <p class="device-name">آلة القهوة</p>
+                    <p class="device-sub">قهوة عربية · جاهزة للتشغيل</p>
+                  </div>
+                </div>
+                <button class="btn coffee-btn" id="coffeeBtn" onclick="startCoffee()">تشغيل الآن</button>
+                <div class="coffee-progress" id="coffeeProgress"><div class="bar" id="coffeeBar"></div></div>
+                <div class="coffee-status" id="coffeeStatus">جارٍ تحضير القهوة…</div>
+
+                <div class="clean-options" style="margin-top:12px;">
+                  <input type="time" id="coffeeTime" value="07:00" style="flex:1; min-width:90px; border:1px solid rgba(14,36,38,0.15); border-radius:10px; padding:8px 6px; font-family:inherit; font-size:12.5px; color:var(--ink); background:#fff;">
+                  <button class="clean-opt" onclick="scheduleCoffee()">جدولة يومية</button>
+                </div>
+                <div class="clean-confirm" id="coffeeScheduleConfirm"></div>
+              </div>
+
+              <div class="device">
+                <div class="device-row">
+                  <div class="device-icon">🧹</div>
+                  <div>
+                    <p class="device-name">طلب تنظيف الغرفة</p>
+                    <p class="device-sub">اختر الوقت المناسب لك</p>
+                  </div>
+                </div>
+                <div class="clean-options">
+                  <button class="clean-opt" onclick="pickClean(this,'الآن')">الآن</button>
+                  <button class="clean-opt" onclick="pickClean(this,'بعد الظهر')">بعد الظهر</button>
+                  <button class="clean-opt" onclick="pickClean(this,'عدم الإزعاج')">عدم الإزعاج</button>
+                </div>
+                <div class="clean-options" style="margin-top:8px;">
+                  <input type="time" id="cleanTime" value="14:00" style="flex:1; min-width:90px; border:1px solid rgba(14,36,38,0.15); border-radius:10px; padding:8px 6px; font-family:inherit; font-size:12.5px; color:var(--ink); background:#fff;">
+                  <button class="clean-opt" onclick="pickCleanCustom()">تحديد وقت</button>
+                </div>
+                <div class="clean-confirm" id="cleanConfirm"></div>
+              </div>
+            </div>
+
+            <!-- SECURITY -->
+            <div class="pane" id="pane-security">
+              <div class="sec-item">
+                <div class="sec-icon">✓</div>
+                <div><h4>تشفير WPA3</h4><p>أعلى معيار تشفير متاح لحماية بيانات جهازك أثناء التصفح.</p></div>
+              </div>
+              <div class="sec-item">
+                <div class="sec-icon">✓</div>
+                <div><h4>عزل شبكي لكل غرفة</h4><p>جهازك على شبكة فرعية معزولة، فلا يمكن لأي جهاز ضيف آخر الوصول إليه.</p></div>
+              </div>
+              <div class="sec-item">
+                <div class="sec-icon">✓</div>
+                <div><h4>انتهاء صلاحية تلقائي</h4><p>تُقفل الجلسة وصلاحيات التحكم بالأجهزة تلقائياً عند تسجيل المغادرة.</p></div>
+              </div>
+              <div class="sec-item">
+                <div class="sec-icon">✓</div>
+                <div><h4>مراقبة سلوك الأجهزة</h4><p>رصد أي نشاط غير معتاد على شبكتك وتنبيه فريق تقنية المعلومات فوراً.</p></div>
+              </div>
+              <div class="sec-item">
+                <div class="sec-icon">✓</div>
+                <div><h4>قفل ذكي مشفّر</h4><p>مفتاح الباب الرقمي صالح فقط أثناء إقامتك، ويُلغى تلقائياً عند تسجيل المغادرة.</p></div>
+              </div>
+            </div>
+
+            <button class="logout" onclick="goTo('splash')">تسجيل الخروج ومحاكاة زائر جديد</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDE: explainer + hotel admin -->
+    <div class="side">
+      <div class="side-tabs" role="tablist">
+        <button class="side-tab active" id="tab-explain" role="tab" onclick="setSideTab('explain')">شرح النظام</button>
+        <button class="side-tab" id="tab-admin" role="tab" onclick="setSideTab('admin')">لوحة إدارة الفندق</button>
+      </div>
+
+      <div class="side-pane active" id="side-explain">
+      <div>
+        <h3>كيف يعمل النظام خلف هذه الشاشة</h3>
+      </div>
+      <div class="flow">
+        <div class="flow-step">
+          <span class="n">1</span>
+          <div><h4>بوابة دخول ذكية (Captive Portal)</h4><p>عند اتصال الضيف بالواي فاي، يُحوَّل تلقائياً لصفحة تسجيل تتحقق من رقم الغرفة عبر نظام إدارة الفندق (PMS).</p></div>
+        </div>
+        <div class="flow-step">
+          <span class="n">2</span>
+          <div><h4>عزل شبكي فوري (VLAN لكل غرفة)</h4><p>بمجرد التحقق، يُنشأ للجهاز نطاق شبكي معزول، ويُربط تلقائياً بأجهزة IoT الخاصة بتلك الغرفة فقط.</p></div>
+        </div>
+        <div class="flow-step">
+          <span class="n">3</span>
+          <div><h4>طبقة IoT موحّدة (Matter / MQTT)</h4><p>الإضاءة والتكييف وآلة القهوة تتواصل عبر بروتوكول موحّد، فيتحكم بها الضيف بنقرة واحدة من نفس الشاشة.</p></div>
+        </div>
+        <div class="flow-step">
+          <span class="n">4</span>
+          <div><h4>ربط تشغيلي مع فريق الفندق</h4><p>طلب التنظيف أو حالة الغرفة ينعكس لحظياً على لوحة تحكم موظفي التشغيل وحالة الحجز في PMS.</p></div>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="margin-top:6px;">الأدوات المقترحة للـ MVP</h3>
+        <div class="stack">
+          <span>Captive Portal: HTML/JS</span>
+          <span>Backend: Node.js / Firebase</span>
+          <span>IoT: ESP32 + MQTT</span>
+          <span>معيار الأجهزة: Matter</span>
+          <span>الأمان: WPA3 + VLAN</span>
+          <span>PMS تجريبي: قاعدة بيانات JSON</span>
+        </div>
+      </div>
+      </div>
+
+      <!-- HOTEL ADMIN DASHBOARD -->
+      <div class="side-pane" id="side-admin">
+        <div class="admin-head">
+          <div>
+            <h3>لوحة إدارة الفندق · التدبير المنزلي</h3>
+            <p class="admin-sub">تتحدث لحظياً مع شاشة الضيف. جرّب طلب تنظيف من غرفة <span id="adminRoomHint">214</span> ثم تابع الطلب هنا.</p>
+          </div>
+          <span class="status-chip" style="margin-top:0"><span class="dot"></span> مباشر · متزامن مع PMS</span>
+        </div>
+
+        <div class="admin-stats">
+          <div class="stat"><span class="stat-n" id="stClean">0</span><span class="stat-l">نظيفة</span></div>
+          <div class="stat"><span class="stat-n" id="stWaiting">0</span><span class="stat-l">بانتظار الدور</span></div>
+          <div class="stat"><span class="stat-n" id="stCleaning">0</span><span class="stat-l">قيد التنظيف</span></div>
+          <div class="stat"><span class="stat-n" id="stDnd">0</span><span class="stat-l">عدم إزعاج</span></div>
+        </div>
+
+        <div>
+          <h4 class="admin-h">حالة الغرف</h4>
+          <div class="room-grid" id="roomGrid"></div>
+        </div>
+
+        <div>
+          <div class="admin-head" style="margin-bottom:8px;">
+            <h4 class="admin-h" style="margin:0;">طلبات النظافة</h4>
+            <button class="mini-btn ghost" onclick="simulateCheckout()">محاكاة مغادرة ضيف (PMS)</button>
+          </div>
+          <div class="queue" id="queueList"></div>
+        </div>
+
+        <div>
+          <h4 class="admin-h">سجل النشاط</h4>
+          <ul class="activity" id="activityList"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙 وضع ليلي</button>
+
+<script src="js/app.js"></script>
+</body>
+</html>
